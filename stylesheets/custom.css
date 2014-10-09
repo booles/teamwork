@@ -1,0 +1,23 @@
+
+.m-top20{
+	margin-top: 20px;
+}
+
+.form-signin {
+	max-width: 330px;
+	padding: 15px;
+	margin: 0 auto;
+}
+
+.chart {
+	height: 300px;
+	max-height: 300px;
+	width: 100%;
+	border: 1px solid #ccc;
+	overflow-y:auto;
+}
+
+.chart li {
+	width: 100%;
+	margin-top: 10px;
+}

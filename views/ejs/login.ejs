@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>ejs</title>
+        <link rel="stylesheet" type="text/css" href="bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="stylesheets/custom.css">
+        <script src="/angular/angular.min.js"></script>
+        <script src="/angular-animate/angular-animate.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/javascripts/socketApp.js"></script>
+		<script src="/javascripts/chart.js"></script>
+	</head>
+
+	<body ng-app="socketApp" ng-controller="socketCtrl">
+		<nav class="navbar navbar-inverse navbar-static-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a href="" class="navbar-brand">Project Name</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">						
+						<li>
+							<a href="">{{userNames}}</a>
+						</li>
+						<li ng-if="isUserNames(userNames)">
+							<a href="">注册</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div ng-show="showed" class="container">
+			<div class="row row-offcanvas row-offcanvas-right">
+				<div class="col-xs-12 col-sm-9">
+					<ul class="chart nav navbar-nav ">
+						<li ng-repeat="text in chartText">
+							<h5>{{text.user}}      {{text.time | date:'dd-M-yyyy H:mm'}}</h5>
+							<p>{{text.sayText}}</p>
+						</li>
+					</ul>
+					<textarea class="m-top20 form-control" rows="3" ng-model="textarea"></textarea>
+					<div class="pull-right m-top20">
+						<button type="button" class="btn btn-primary" ng-click="sendText()">发送</button>
+					</div>
+					
+				</div>
+	
+				<div class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+					<div class="list-group">
+						<a href="javascript:void(0);" class="m-top20 list-group-item active" ng-repeat="(key, userName) in allUser">
+							{{userName}}
+						</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		
+		<div class="container"  ng-show="!showed">
+			<form class="form-signin" role="form" ng-submit="login()">
+		        <h2 class="form-signin-heading">注册</h2>
+		        <input type="text" class="form-control" name="userName" ng-model="userName" placeholder="用户名" required="" autofocus="">
+		        <input type="password" class="m-top20 form-control" name="password" ng-model="password" placeholder="设置密码" required="">
+		        <button class="m-top20 btn btn-lg btn-primary btn-block" type="submit" >注册</button>
+		    </form>
+		</div>
+
+	</body>
+</html>	
