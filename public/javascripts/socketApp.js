@@ -55,10 +55,11 @@ angular.module('socketApp', [])
 		$scope.singletext = [];
 		$scope.singleTeml = $compile($templateCache.get('chartText.html'))($scope);
 
-		$scope.singleChart = function (userName){
+		$scope.singleChart = function (userName,id){
 			if(userName == $scope.userNames) return;	
-			$scope.singUser = userName;
+			$scope.singUser = id;
 			angular.element(document.querySelector("body")).append($scope.singleTeml);
+			
 		};
 
 		$scope.singleSendText  =function (){
@@ -69,6 +70,10 @@ angular.module('socketApp', [])
 				sayText:$scope.singleTextarea
 			}); 
 			$scope.singleTextarea = "";
+			socket.emit("say to someone", $scope.singUser);
+			socket.on("my message",function (data){
+				console.log(data);	
+			})
 		};
 
 
