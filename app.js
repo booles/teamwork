@@ -48,8 +48,6 @@ io.sockets.on('connection', function (socket) {
     //说的话发给所有人，不包括自己
     socket.on("say",function (data){
         socket.broadcast.emit('say', data);
-        //var clients = io.sockets.clients();
-        //console.log(clients);    
     });
     //掉线
     socket.on('disconnect', function() {

@@ -1,3 +1,4 @@
 {
-  "directory" : "public"
+  "directory" : "public",
+  "json"      : "bower.json"
 }

@@ -2,8 +2,8 @@
 var socket = null;
 
 
-angular.module('socketApp', ["ngAnimate"])
-	.controller('socketCtrl', ['$scope', function ($scope) {
+angular.module('socketApp', [])
+	.controller('socketCtrl', ['$scope','$templateCache','$compile', function ($scope,$templateCache,$compile) {
 		$scope.showed = false;
 
 		//存储聊天信息
@@ -50,4 +50,26 @@ angular.module('socketApp', ["ngAnimate"])
 			//发送说的话
 			socket.emit("say",$scope.textJson);
 		};
+
+		//私聊
+		$scope.singletext = [];
+		$scope.singleTeml = $compile($templateCache.get('chartText.html'))($scope);
+
+		$scope.singleChart = function (userName){
+			if(userName == $scope.userNames) return;	
+			$scope.singUser = userName;
+			angular.element(document.querySelector("body")).append($scope.singleTeml);
+		};
+
+		$scope.singleSendText  =function (){
+			$scope.singleDate = new Date().getTime();
+			$scope.singletext.unshift({
+				time:$scope.singleDate,
+				user:$scope.userNames,
+				sayText:$scope.singleTextarea
+			}); 
+			$scope.singleTextarea = "";
+		};
+
+
 	}])

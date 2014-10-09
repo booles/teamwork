@@ -1,0 +1,23 @@
+{
+  "name": "teamwork",
+  "version": "1.0.1",
+  "homepage": "https://github.com/booles/teamwork",
+  "authors": [
+    "seven"
+  ],
+  "main": "app.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.0-beta.2",
+    "angular-animate": "~1.2.26",
+    "bootstrap": "~3.2.0"
+  }
+}
