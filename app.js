@@ -1,4 +1,6 @@
 
+console.log(2);
+
 /**
  * Module dependencies.
  */
