@@ -1,6 +1,3 @@
-
-console.log(2);
-
 /**
  * Module dependencies.
  */
@@ -38,46 +35,34 @@ app.get('/login', user.login);
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
-var users = {};
+var userInfo = {};
+    userInfo.allUserName = {};
+    
 
-var usersData = {};
-io.use(function(socket, next) {
-    //handshake ok
-    //usersData[socket.id] = ourUserData;
-    //console.log(socket.id);
-    next();
-});
 io.sockets.on('connection', function (socket) {
-    //console.log(io.sockets.server.eio.clients);
-    /*socket.emit("socket",socket);*/  //当试图发送socket时会出现 RangeError: Maximum call stack size exceeded
+
+    //接收用户名
     socket.on("online",function (data){
-        users[socket.id] = data;        //保存用户名
-        io.sockets.emit('online', users);   //发给所有人用户名 包括自己
+        userInfo.allUserName[socket.id] = data.userName;
+        //向所有用户发送用户名包括自己
+       io.sockets.emit("someone userName",userInfo.allUserName);
     });
-    //说的话发给所有人，不包括自己
-    socket.on("say",function (data){
-        socket.join(data.user);
-        socket.broadcast.emit('say', data);
+    //接收信息
+    socket.on("say message",function (data){
+        //发送给其他用户信息
+        socket.broadcast.emit("receive message",data)    
     });
-    socket.on("say to someone",function (id){
-        console.log(id);
-        for(var i in users){
-           if(i == id){
-                socket.broadcast.to(id).emit('my message', "msg"); 
-           }
-        }
-        //   
-    })
-    //掉线
-    socket.on('disconnect', function() {
-        if(users[socket.id]){
-            delete users[socket.id];
-            io.sockets.emit('online', users);
-        };
+
+    //下线删除
+    socket.on("disconnect",function (){
+        if(userInfo.allUserName[socket.id]) delete userInfo.allUserName[socket.id];
+        io.sockets.emit("someone userName",userInfo.allUserName);
     });
+
+
 });
 
 
-server.listen(app.get('port'), "10.144.33.1",function(){
+server.listen(app.get('port'),function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
