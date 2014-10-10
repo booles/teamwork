@@ -10,8 +10,10 @@
     "jade": "*"
   },
   "devDependencies": {
-    "socket.io": "^1.1.0",
     "ejs": "^1.0.0",
-    "express-partials": "^0.3.0"
+    "express-partials": "^0.3.0",
+    "grunt": "^0.4.5",
+    "grunt-nodemon": "^0.3.0",
+    "socket.io": "^1.1.0"
   }
 }
