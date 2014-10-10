@@ -23,6 +23,10 @@ angular.module('socketApp', [])
 
 			//连接到socket
 			socket = io.connect("http://localhost:3000/");
+			//接受自己的id
+			socket.on("online",function (data){
+				$scope.mySelfId = data.mySelfId;
+			})
 			//发送用户名
 			socket.emit("online",{userName:$scope.initUserName});
 			//接收到其他用户名
@@ -35,6 +39,17 @@ angular.module('socketApp', [])
 				$scope.chartText.unshift(message);
 				$scope.$apply();
 			});
+			//登陆后就绑定单人聊天，如果有人跟你单聊，立马弹出单聊框
+			socket.on("say to someone",function (otherWithId,data,start){
+				if(start == "start"){
+					angular.element(document.querySelector("body")).append($scope.singleTeml);
+					$scope.singUser = otherWithId;
+
+					$scope.singletextArray.unshift(data);
+					$scope.$apply();
+				};
+			});
+
 		};
 
 		
@@ -52,28 +67,34 @@ angular.module('socketApp', [])
 		};
 
 		//私聊
-		$scope.singletext = [];
+		$scope.singletextArray = [];
 		$scope.singleTeml = $compile($templateCache.get('chartText.html'))($scope);
 
-		$scope.singleChart = function (userName,id){
-			if(userName == $scope.userNames) return;	
+		$scope.singleChart = function (withUserName,id){
+			if(withUserName == $scope.initUserName ) return;
+			$scope.withUserName =  withUserName;	
 			$scope.singUser = id;
 			angular.element(document.querySelector("body")).append($scope.singleTeml);
+			socket.emit("say to someone", $scope.mySelfId, $scope.singUser,$scope.singletext);
 			
 		};
 
 		$scope.singleSendText  =function (){
 			$scope.singleDate = new Date().getTime();
-			$scope.singletext.unshift({
-				time:$scope.singleDate,
-				user:$scope.userNames,
-				sayText:$scope.singleTextarea
-			}); 
+			$scope.singletext = {
+				userName : $scope.initUserName,
+				chartText : $scope.singleTextarea,
+				time : $scope.singleDate 
+			}; 
+			$scope.singletextArray.unshift($scope.singletext);
 			$scope.singleTextarea = "";
-			socket.emit("say to someone", $scope.singUser);
-			socket.on("my message",function (data){
-				console.log(data);	
-			})
+
+			socket.emit("say to someone", $scope.mySelfId, $scope.singUser,$scope.singletext,"start");
+			
+			/*socket.on("say to someone",function (otherWithId,data){
+				$scope.singletextArray.unshift(data);
+				$scope.$apply();
+			});*/
 		};
 
 

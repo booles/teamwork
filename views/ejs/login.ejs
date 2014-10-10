@@ -58,12 +58,12 @@
 		
 		<script id="chartText.html" type="text/ng-template">
 			<div class="container">
-				<h4>您正在</h4>
+				<h4>您正在和<a class="bg-info">{{withUserName}}</a>聊天：</h4>
 				<div class="col-xs-12 col-sm-9">
 					<ul class="chart nav navbar-nav ">
-						<li ng-repeat="text in singletext">
-							<h5>{{text.user}}      {{text.time | date:'dd-M-yyyy H:mm'}}</h5>
-							<p>{{text.sayText}}</p>
+						<li ng-repeat="text in singletextArray">
+							<h4>{{text.userName}}     <small>{{text.time | date:'dd-M-yyyy H:mm'}}</small></h4>
+							<p  class="bg-info">{{text.chartText}}</p>
 						</li>
 					</ul>
 					<textarea class="m-top20 form-control" rows="3" ng-model="singleTextarea"></textarea>

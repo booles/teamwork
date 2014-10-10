@@ -41,6 +41,7 @@ var userInfo = {};
 
 io.sockets.on('connection', function (socket) {
 
+    socket.emit("online", {mySelfId:socket.id});
     //接收用户名
     socket.on("online",function (data){
         userInfo.allUserName[socket.id] = data.userName;
@@ -52,6 +53,13 @@ io.sockets.on('connection', function (socket) {
         //发送给其他用户信息
         socket.broadcast.emit("receive message",data)    
     });
+
+    //发送给某人
+
+    socket.on("say to someone",function (mySelfId,id,masg,start){
+      socket.broadcast.to(id).emit("say to someone",mySelfId,masg,start)    
+    });
+
 
     //下线删除
     socket.on("disconnect",function (){
