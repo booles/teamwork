@@ -77,6 +77,6 @@ io.sockets.on('connection', function (socket) {
 });
 
 
-server.listen(app.get('port'), function(){
+server.listen(app.get('port'), "10.144.33.1",function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

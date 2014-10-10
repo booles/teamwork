@@ -18,7 +18,7 @@ angular.module('socketApp', [])
 			$scope.userNames = this.userName;
 			$scope.showed = !$scope.showed;	
 			//只有当登陆的时候连接socket
-			socket = io.connect('http://localhost:3000');
+			socket = io.connect('10.144.33.1:3000');
 			//上线了，接收到发过来的用户名，包括自己
 			socket.on('online', function (data) {
 				$scope.allUser = data;
