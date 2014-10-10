@@ -47,7 +47,6 @@ io.use(function(socket, next) {
     //console.log(socket.id);
     next();
 });
-
 io.sockets.on('connection', function (socket) {
     //console.log(io.sockets.server.eio.clients);
     /*socket.emit("socket",socket);*/  //当试图发送socket时会出现 RangeError: Maximum call stack size exceeded
