@@ -14,7 +14,4 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['nodemon']);     
 };
 
-//
-//µÚ¶ş´ÎÌá½»
-
-//ç¬¬ä¸‰æ¬¡æäº¤
+//updata 

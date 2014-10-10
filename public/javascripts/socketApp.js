@@ -18,7 +18,7 @@ angular.module('socketApp', [])
 			$scope.userNames = this.userName;
 			$scope.showed = !$scope.showed;	
 			//只有当登陆的时候连接socket
-			socket = io.connect('http://localhost:3000');
+			socket = io.connect('10.144.33.1:3000');
 			//上线了，接收到发过来的用户名，包括自己
 			socket.on('online', function (data) {
 				$scope.allUser = data;
@@ -55,10 +55,11 @@ angular.module('socketApp', [])
 		$scope.singletext = [];
 		$scope.singleTeml = $compile($templateCache.get('chartText.html'))($scope);
 
-		$scope.singleChart = function (userName){
+		$scope.singleChart = function (userName,id){
 			if(userName == $scope.userNames) return;	
-			$scope.singUser = userName;
+			$scope.singUser = id;
 			angular.element(document.querySelector("body")).append($scope.singleTeml);
+			
 		};
 
 		$scope.singleSendText  =function (){
@@ -69,6 +70,10 @@ angular.module('socketApp', [])
 				sayText:$scope.singleTextarea
 			}); 
 			$scope.singleTextarea = "";
+			socket.emit("say to someone", $scope.singUser);
+			socket.on("my message",function (data){
+				console.log(data);	
+			})
 		};
 
 
