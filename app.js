@@ -36,12 +36,13 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
 var userInfo = {};
-    userInfo.allUserName = {};
+    userInfo.allUserName = {},
+    userInfo.message = [];
     
 
 io.sockets.on('connection', function (socket) {
-    console.log(socket.request.headers.cookie );
-    socket.emit("online", {mySelfId:socket.id});
+    //console.log(socket.request.headers.cookie );
+    socket.emit("online", {mySelfId:socket.id,startMessage:userInfo.message});
     //接收用户名
     socket.on("online",function (data){
         userInfo.allUserName[socket.id] = data.userName;
@@ -51,6 +52,7 @@ io.sockets.on('connection', function (socket) {
     //接收信息
     socket.on("say message",function (data){
         //发送给其他用户信息
+        userInfo.message.unshift(data);
         socket.broadcast.emit("receive message",data)    
     });
 

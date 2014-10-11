@@ -47,8 +47,8 @@
 	
 				<div class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
 					<div class="list-group">
-						<a href="javascript:void(0);" ng-dblclick="singleChart(userName,key)" class="m-top20 list-group-item active" ng-repeat=" (key,userName) in userNames">
-							{{userName}}
+						<a href="javascript:void(0);" x-single-chart="{{userName}}" id="{{key}}" class="m-top20 list-group-item active" ng-repeat=" (key,userName) in userNames">
+							{{userName}}<small class="navbar-right bg-info">{{num}}</small>
 						</a>
 					</div>
 				</div>
