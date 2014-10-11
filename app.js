@@ -40,7 +40,7 @@ var userInfo = {};
     
 
 io.sockets.on('connection', function (socket) {
-
+    console.log(socket.request.headers.cookie );
     socket.emit("online", {mySelfId:socket.id});
     //接收用户名
     socket.on("online",function (data){
@@ -71,6 +71,6 @@ io.sockets.on('connection', function (socket) {
 });
 
 
-server.listen(app.get('port'),function(){
+server.listen(app.get('port'),"10.144.33.1",function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

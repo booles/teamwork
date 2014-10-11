@@ -22,7 +22,7 @@ angular.module('socketApp', [])
 			$scope.showed = true;
 
 			//连接到socket
-			socket = io.connect("http://localhost:3000/");
+			socket = io.connect("10.144.33.1:3000/");
 			//接受自己的id
 			socket.on("online",function (data){
 				$scope.mySelfId = data.mySelfId;
@@ -41,10 +41,13 @@ angular.module('socketApp', [])
 			});
 			//登陆后就绑定单人聊天，如果有人跟你单聊，立马弹出单聊框
 			socket.on("say to someone",function (otherWithId,data,start){
+				/*
+					如果有人跟自己单聊，此时要自动建一个对话框
+				*/
 				if(start == "start"){
 					angular.element(document.querySelector("body")).append($scope.singleTeml);
-					$scope.singUser = otherWithId;
-
+					$scope.singUser = otherWithId;  //将$scope.singUser设置为和你单聊人的id
+					$scope.withUserName = data.userName;
 					$scope.singletextArray.unshift(data);
 					$scope.$apply();
 				};
@@ -88,15 +91,14 @@ angular.module('socketApp', [])
 			}; 
 			$scope.singletextArray.unshift($scope.singletext);
 			$scope.singleTextarea = "";
-
+			/*
+				发送对话内容，分为两种情况：
+				1：要和默认单聊，那么将会发送：
+					自己的id，发送方的id，对话内容，开始标识
+			*/
 			socket.emit("say to someone", $scope.mySelfId, $scope.singUser,$scope.singletext,"start");
-			
-			/*socket.on("say to someone",function (otherWithId,data){
-				$scope.singletextArray.unshift(data);
-				$scope.$apply();
-			});*/
-		};
 
+		};
 
 		$scope.isUserNames = function (userNames){
 			return userNames == "登陆";	
