@@ -27,6 +27,11 @@ angular.module('socketApp', [])
 					};
 				});
 
+				socket.on("someone userName",function (otherUser){
+					console.log(otherUser.disconnectId);
+					$scope.disconnectId = otherUser.disconnectId;
+				});
+
 				//双击名字弹出单聊框
 				iElement.bind("dblclick",function (){
 					if(iAttrs.singleChart == $scope.initUserName) return;
@@ -86,8 +91,8 @@ angular.module('socketApp', [])
 			socket.emit("online",{userName:$scope.initUserName});
 			//接收到其他用户名
 			socket.on("someone userName",function (otherUser){
-				$scope.userNames = otherUser;
-				$scope.$apply();	
+				$scope.userNames = otherUser.allUserName;
+				$scope.$apply();
 			});
 			//接收消息信息
 			socket.on("receive message",function (message){

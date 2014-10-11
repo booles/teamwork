@@ -30,7 +30,13 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/login', user.login);
+
+//进入聊天室
+
+app.get('/chart-room', user.chartRoom);
+
+
+//聊天室
 
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
@@ -47,7 +53,7 @@ io.sockets.on('connection', function (socket) {
     socket.on("online",function (data){
         userInfo.allUserName[socket.id] = data.userName;
         //向所有用户发送用户名包括自己
-       io.sockets.emit("someone userName",userInfo.allUserName);
+       io.sockets.emit("someone userName",{allUserName:userInfo.allUserName});
     });
     //接收信息
     socket.on("say message",function (data){
@@ -66,7 +72,7 @@ io.sockets.on('connection', function (socket) {
     //下线删除
     socket.on("disconnect",function (){
         if(userInfo.allUserName[socket.id]) delete userInfo.allUserName[socket.id];
-        io.sockets.emit("someone userName",userInfo.allUserName);
+        io.sockets.emit("someone userName",{allUserName:userInfo.allUserName,disconnectId:socket.id});
     });
 
 

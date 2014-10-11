@@ -10,3 +10,7 @@ exports.list = function(req, res){
 exports.login = function(req, res){
   res.render("login")
 };
+
+exports.chartRoom = function(req, res){
+  res.render("chart-room")
+};
