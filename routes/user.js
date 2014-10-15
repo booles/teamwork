@@ -14,3 +14,11 @@ exports.login = function(req, res){
 exports.chartRoom = function(req, res){
   res.render("chart-room")
 };
+
+exports.mysql = function(req, res){
+  res.render("mysql")
+};
+
+exports.mongodb = function(req, res){
+  res.render("mongodb")
+};
