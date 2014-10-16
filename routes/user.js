@@ -22,3 +22,8 @@ exports.mysql = function(req, res){
 exports.mongodb = function(req, res){
   res.render("mongodb")
 };
+
+exports.mongo_test = function(req, res){
+
+  	res.render("mongo_test/mongo_test");
+};

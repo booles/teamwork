@@ -45,12 +45,15 @@ app.get('/mysql',user.mysql);
 
 app.get('/mongodb',user.mongodb);
 
-//聊天室
+//请求地址
 
 app.get('/register',function (req,res){
-    console.log(req.query);
-    res.send({name:"111"});
+    exa(req.query,res);
+    
 });
+
+
+app.get("/mongodb/mongo_test",user.mongo_test)
 
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
@@ -102,39 +105,54 @@ mongoose.connect("mongodb://127.0.0.1/teamwork",function (error){
 mongoose.connect('mongodb://localhost/teamwork',function(err){
    if(err) throw err;
    console.log("成功！");
-   exa();
 });
 
 
 var schema = mongoose.Schema;
 
 var chartSchema = schema({
-    name:{type:String},
-    age:{type:Number,min:0,max:100}
+    userName:{type:String},
+    password:{type:Number,min:0,max:100}
 });
 
 chartSchema.methods.attack = function (){
-    console.log(this);    
+   //console.log(this);    
 };
 
 var chartModule = mongoose.model("chartSchema2",chartSchema);
 
-function exa(){
-    chartModule.remove(function (error,person){
+function exa(query,res){
+    /*chartModule.remove(function (error,person){
             if (error) return done(error); 
             console.log(person);
-    });
-    chartModule.create({name:"wangyun1",age:24},function (error,link){
-       if (error) return done(error);  
-      //console.log(link); 
+    });*/
+    var isRepeat = true;
 
-       link.attack();
+    chartModule.find(function (error,doc){
+        if (error) return done(error);  
+
+        for(var i=0;i<doc.length;i++){
+            if(doc[i].userName == query.userName){
+                res.send({type:1,message:"重复"});
+                isRepeat = false;
+                break;
+            }  
+        };
+
+        if(true){
+            chartModule.create({userName:query.userName,password:query.password},function (error,link){
+               if (error) return done(error);  
+               link.attack();
+               res.send({type:0,message:"插入成功"});
+            });
+        };
+
+
     });
 
-    chartModule.find(function (error,person){
-       if (error) return done(error);  
-       console.log(person);
-    }); 
+    
+
+
 };
 
 

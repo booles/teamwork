@@ -33,21 +33,29 @@
 		        <input type="text" class="form-control" name="userName" ng-model="userName" placeholder="用户名" required="" autofocus="">
 		        <input type="password" class="form-control" name="password" ng-model="password" placeholder="设置密码" required="">
 		        <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+		        <span>{{isReapt}}</span>
 		    </form>
 		</div>
 	</body>
 	<script>
 	angular.module('textMongo', [])
-		.controller('mongoCtrl', ['$scope',"$http", function ($scope,$http) {
+		.controller('mongoCtrl', ['$scope',"$http","$location", function ($scope,$http,$location) {
 			
 			$scope.pustMongo = function (){
 				$scope.userName = this.userName;
 				$scope.password = this.password;
 				$http({
-					type:"get",
+					type:"post",
 					url:"http://localhost:3000/register",
 					params:{userName:$scope.userName,password:$scope.password}
-				});	
+				}).success(function (data){
+					console.log(data);
+					if(data.type){
+						$scope.isReapt = data.message;
+					}else{
+						window.open("http://localhost:3000/mongodb/mongo_test","_self");
+					}
+				});
 			};
 
 
